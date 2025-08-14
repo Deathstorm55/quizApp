@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Quiz Results - Igbara Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>🎓 Igbara Quiz App</h1>
+        <p>Your Quiz Results</p>
+    </header>
+    <section class="form-container">
+        <h2>Your Results, <span id="userName">Student</span>!</h2>
+        <div class="result-summary">
+            <p>Score: <span id="totalScore">0</span></p>
+            <p>Correct Answers: <span id="correctAnswers">0</span></p>
+            <p>Incorrect Answers: <span id="incorrectAnswers">0</span></p>
+            <p>Percentage: <span id="accuracyRate">0%</span></p>
+        </div>
+        <h3>Question Breakdown</h3>
+        <div id="questionResults">
+            <!-- Dynamic question results with checkmarks -->
+        </div>
+        <p><a href="index.php">Back to Quiz</a></p>
+    </section>
+    <!-- Add this script BEFORE your scripts.js include -->
+<script>
+    // Load results from localStorage as fallback
+    window.quizResults = JSON.parse(localStorage.getItem('quizResults') || '{}');
+    console.log('Loaded results:', window.quizResults);
+</script>
+<script src="scripts.js"></script>
+</body>
+</html>

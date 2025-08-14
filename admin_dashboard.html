@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Igbara Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Load these in your HTML head or before your scripts.js -->
+<script src="jsLib/jspdf.umd.min.js"></script>
+<script src="jsLib/jspdf.plugin.autotable.min.js"></script>
+<script src="jsLib/scripts.js"></script> <!-- Your main script -->
+</head>
+<body>
+    <header>
+        <h1>🎓 Igbara Quiz App - Admin Dashboard</h1>
+        <p>Manage Quiz Results & Questions</p>
+    </header>
+    <section class="form-container">
+        <h2>Quiz Results</h2>
+        <div id="resultsTable">
+            <!-- Results table will be dynamically inserted here -->
+        </div>
+        <button id="addQuestion">Add New Question</button>
+        <button id="printResults">Print Results as PDF 📄</button>
+        <p><a href="login.html">Log Out</a></p>
+    </section>
+
+    <!-- Question Upload Modal -->
+    <section class="modal hidden" id="questionModal">
+        <div class="modal-content">
+            <h3>📝 Add New Question</h3>
+            <form id="questionForm" action="upload_question.php" method="POST">
+                <div class="form-group">
+                    <label for="questionText">Question</label>
+                    <textarea id="questionText" name="questionText" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="correctAnswer">Correct Answer</label>
+                    <input type="text" id="correctAnswer" name="correctAnswer" required>
+                </div>
+                <div class="form-group">
+                    <label for="optionA">Option A</label>
+                    <input type="text" id="optionA" name="optionA" required>
+                </div>
+                <div class="form-group">
+                    <label for="optionB">Option B</label>
+                    <input type="text" id="optionB" name="optionB" required>
+                </div>
+                <div class="form-group">
+                    <label for="optionC">Option C</label>
+                    <input type="text" id="optionC" name="optionC" required>
+                </div>
+                <div class="form-group">
+                    <label for="optionD">Option D</label>
+                    <input type="text" id="optionD" name="optionD" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" name="category" value="Revision Topic">
+                </div>
+                <button type="submit">Upload Question</button>
+                <button type="button" id="closeQuestionModal">Cancel</button>
+            </form>
+        </div>
+    </section>
+
+  
+</body>
+</html>

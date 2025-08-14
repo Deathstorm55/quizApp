@@ -1,0 +1,648 @@
+/* CSS3 Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General Body Styling */
+body {
+    font-family: 'Comic Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Header Styling */
+header {
+    background-color: #7c3aed;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-bottom: 4px solid #ec4899;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+header p {
+    font-size: 1.25rem;
+}
+
+/* Form Section Styling */
+.form-container {
+    max-width: 64rem;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.form-container:hover {
+    transform: scale(1.02);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #4b0082;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #d8b4fe;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+}
+
+.fixed-mode {
+    padding: 0.75rem;
+    background-color: #f3e8ff;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: #4b0082;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #ec4899;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-container button:hover {
+    background-color: #db2777;
+    transform: translateY(-3px);
+}
+
+.form-container button:nth-child(2) {
+    background-color: #6b7280;
+}
+
+.form-container button:nth-child(2):hover {
+    background-color: #4b5563;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.signup-link a {
+    color: #7c3aed;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* Welcome Section Styling */
+.welcome-section {
+    max-width: 64rem;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.welcome-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #4b0082;
+}
+
+.welcome-section p {
+    color: #6b7280;
+    font-size: 1.125rem;
+}
+
+/* Stats Section Styling */
+.stats-section {
+    max-width: 64rem;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-around;
+}
+
+.stat {
+    text-align: center;
+    flex: 1 1 200px;
+}
+
+.stat p:first-child {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #7c3aed;
+}
+
+.stat p:last-child {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+/* Controls Section Styling */
+.controls-section {
+    max-width: 64rem;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.controls button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.controls button:nth-child(1) {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.controls button:nth-child(1):hover {
+    background-color: #2563eb;
+}
+
+.controls button:nth-child(2) {
+    background-color: #dc2626;
+    color: white;
+}
+
+.controls button:nth-child(2):hover {
+    background-color: #b91c1c;
+}
+
+.controls button:nth-child(3) {
+    background-color: #16a34a;
+    color: white;
+}
+
+.controls button:nth-child(3):hover {
+    background-color: #15803d;
+}
+
+.controls button:nth-child(4) {
+    background-color: #4b5563;
+    color: white;
+}
+
+.controls button:nth-child(4):hover {
+    background-color: #374151;
+}
+
+.controls button:hover {
+    transform: translateY(-3px);
+}
+
+/* Question Section Styling */
+.question-section {
+    max-width: 64rem;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.question-header p:first-child {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #4b0082;
+}
+
+.question-header p:last-child {
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+/* Modal Section Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 32rem;
+    width: 100%;
+}
+
+.modal-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #4b0082;
+}
+
+.modal-content button {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #ec4899;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-content button:nth-child(2) {
+    background-color: #6b7280;
+}
+
+.modal-content button:nth-child(2):hover {
+    background-color: #4b5563;
+}
+
+.modal-content button:hover {
+    background-color: #db2777;
+    transform: translateY(-3px);
+}
+
+/* Results Page Styling */
+.result-summary {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #f3e8ff;
+    border-radius: 0.5rem;
+}
+
+.result-summary p {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.result-summary span {
+    font-weight: 700;
+    color: #4b0082;
+}
+
+.question-result {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #d8b4fe;
+    border-radius: 0.5rem;
+}
+
+.question-result.correct::before {
+    content: '✔';
+    color: #16a34a;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.question-result.incorrect::before {
+    content: '✖';
+    color: #dc2626;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.question-result p {
+    margin: 0.25rem 0;
+}
+
+/* Results Table Styling */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.results-table th, .results-table td {
+    padding: 0.75rem;
+    border: 1px solid #d8b4fe;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #f3e8ff;
+    font-weight: 600;
+}
+
+.results-table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+/* Hidden Class */
+.hidden {
+    display: none;
+}
+
+/* Auth Message Styling */
+#authMessage {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+/* ====================== */
+/* Button Styles          */
+/* ====================== */
+
+/* Base Button Styles */
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #db2777;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Button (Add Question) */
+#addQuestion {
+    background-color: #7c3aed;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+#addQuestion:hover {
+    background-color: #6d28d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(124, 58, 237, 0.3);
+}
+
+/* Secondary Button (Print Results) */
+#printResults {
+    background-color: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+#printResults:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Modal Buttons */
+#closeQuestionModal {
+    background-color: #6b7280;
+    color: white;
+    margin-left: 0.5rem;
+}
+
+#closeQuestionModal:hover {
+    background-color: #4b5563;
+}
+
+/* Form Submit Button */
+#questionForm button[type="submit"] {
+    background-color: #10b981;
+    color: white;
+}
+
+#questionForm button[type="submit"]:hover {
+    background-color: #059669;
+}
+
+/* Log Out Link Styling */
+.form-container a[href="login.html"] {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.form-container a[href="login.html"]:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Button Icons */
+button::before {
+    margin-right: 0.5rem;
+}
+
+/* Button Focus States */
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    #closeQuestionModal {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+}
+/* Add to your styles.css */
+.question-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.question-nav button {
+    padding: 0.5rem 1rem;
+    background-color: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.question-nav button:hover:not(:disabled) {
+    background-color: #6d28d9;
+}
+
+.question-nav button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.question-nav span {
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.form-actions {
+    margin-top: 1rem;
+    text-align: center;
+}
+/* Question boxes container */
+.question-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Individual question box */
+.question-box {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+/* Unanswered question */
+.question-box.unanswered {
+    background-color: #fee2e2; /* Light red */
+    color: #dc2626; /* Dark red */
+    border: 2px solid #dc2626;
+}
+
+/* Answered question */
+.question-box.answered {
+    background-color: #dcfce7; /* Light green */
+    color: #16a34a; /* Dark green */
+    border: 2px solid #16a34a;
+}
+
+/* Current question */
+.question-box.current {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Blue glow */
+    border: 2px solid #3b82f6; /* Blue */
+    z-index: 1;
+}
+
+/* Hover effects */
+.question-box:hover:not(.current) {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.question-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.question-actions button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#prevQuestion, #nextQuestion {
+    background-color: #7c3aed;
+    color: white;
+    border: none;
+}
+
+#prevQuestion:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+#submitAnswer {
+    background-color: #10b981;
+    color: white;
+    border: none;
+}
+
+#submitAnswer:hover {
+    background-color: #059669;
+}
+
+#prevQuestion:hover:not(:disabled),
+#nextQuestion:hover {
+    background-color: #6d28d9;
+}
