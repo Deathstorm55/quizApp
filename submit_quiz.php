@@ -38,7 +38,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-if (!is_array($answers) || empty($answers)) {
+if (!is_array($answers)) {
     error_log('submit_quiz.php: Answers array is empty or invalid');
     echo json_encode(array('status' => 'error', 'message' => 'No valid answers provided'));
     ob_end_flush();
@@ -49,7 +49,7 @@ if (!is_array($answers) || empty($answers)) {
 $calculatedCorrect = 0;
 $calculatedIncorrect = 0;
 foreach ($answers as $answer) {
-    if (!isset($answer['question'], $answer['selected'], $answer['correct'], $answer['isCorrect'])) {
+    if (!isset($answer['question'], $answer['correct'], $answer['isCorrect'])) {
         error_log('submit_quiz.php: Invalid answer format - ' . json_encode($answer));
         continue;
     }
@@ -114,7 +114,7 @@ try {
         $correct = isset($answer['correct']) ? trim($answer['correct']) : '';
         $isCorrect = isset($answer['isCorrect']) && $answer['isCorrect'] ? 1 : 0;
 
-        if (empty($question) || empty($selected) || empty($correct)) {
+        if (empty($question) || empty($correct)) {
             error_log('submit_quiz.php: Skipping invalid answer - question=' . $question . ', selected=' . $selected . ', correct=' . $correct);
             continue;
         }

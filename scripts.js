@@ -40,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
         score: 0,
         correctAnswers: 0,
         incorrectAnswers: 0,
-        isSubmitting: false
+        isSubmitting: false,
+        fullName: null
     };
 
     console.log('Initial state.currentQuestions:', state.currentQuestions);
@@ -82,15 +83,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return mins + ':' + (secs < 10 ? '0' : '') + secs;
         },
         getSessionData: function() {
+            const userName = localStorage.getItem('userName') || '';
+            const key = 'quizData_' + userName;
             try {
-                return JSON.parse(sessionStorage.getItem('quizData') || '{}');
+                return JSON.parse(localStorage.getItem(key) || '{}');
             } catch (e) {
                 return {};
             }
         },
         setSessionData: function(data) {
-            if (sessionStorage) {
-                sessionStorage.setItem('quizData', JSON.stringify(data));
+            const userName = localStorage.getItem('userName') || state.fullName || '';
+            const key = 'quizData_' + userName;
+            if (localStorage && userName) {
+                localStorage.setItem(key, JSON.stringify(data));
             }
         }
     };
@@ -110,6 +115,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!data || data.status !== 'success') {
                     throw new Error(data && data.message ? data.message : 'Please log in to access the quiz.');
                 }
+                // Load saved quiz state if available
+                var savedState = utils.getSessionData();
+                if (savedState && Object.keys(savedState).length > 0) {
+                    state.timeLeft = savedState.timeLeft !== undefined ? savedState.timeLeft : state.timeLeft;
+                    state.currentQuestionIndex = savedState.currentQuestionIndex !== undefined ? savedState.currentQuestionIndex : state.currentQuestionIndex;
+                    state.userAnswers = savedState.userAnswers || state.userAnswers;
+                    state.score = savedState.score !== undefined ? savedState.score : state.score;
+                    state.correctAnswers = savedState.correctAnswers !== undefined ? savedState.correctAnswers : state.correctAnswers;
+                    state.incorrectAnswers = savedState.incorrectAnswers !== undefined ? savedState.incorrectAnswers : state.incorrectAnswers;
+                    state.currentQuestions = savedState.currentQuestions || state.currentQuestions;
+                    state.fullName = localStorage.getItem('userName') || state.fullName;
+                    if (elements.userNameSpan) elements.userNameSpan.textContent = state.fullName;
+                    // Resume quiz if there is saved state
+                    if (elements.assessmentForm) elements.assessmentForm.className += ' hidden';
+                    if (elements.welcomeSection) elements.welcomeSection.className = elements.welcomeSection.className.replace(' hidden', '');
+                    if (elements.statsSection) elements.statsSection.className = elements.statsSection.className.replace(' hidden', '');
+                    if (elements.controlsSection) elements.controlsSection.className = elements.controlsSection.className.replace(' hidden', '');
+                    if (elements.questionSection) elements.questionSection.className = elements.questionSection.className.replace(' hidden', '');
+                    quiz.startTimer();
+                    quiz.displayQuestion();
+                }
             }).catch(function(error) {
                 utils.showMessage(elements.authMessage, error.message);
                 if (elements.assessmentForm) {
@@ -119,13 +145,20 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         },
         logout: function() {
+            // Save current state before logout
+            utils.setSessionData({
+                timeLeft: state.timeLeft,
+                currentQuestionIndex: state.currentQuestionIndex,
+                userAnswers: state.userAnswers,
+                score: state.score,
+                correctAnswers: state.correctAnswers,
+                incorrectAnswers: state.incorrectAnswers,
+                currentQuestions: state.currentQuestions
+            });
             fetch('logout.php', {
                 method: 'POST',
                 credentials: 'include'
             }).then(function() {
-                if (sessionStorage) {
-                    sessionStorage.removeItem('quizData');
-                }
                 window.location.href = 'login.html';
             }).catch(function(error) {
                 console.error('Logout failed:', error);
@@ -138,24 +171,28 @@ document.addEventListener('DOMContentLoaded', function() {
     var quiz = {
         initialize: function() {
             var savedState = utils.getSessionData();
-            if (savedState.timeLeft) {
+            if (savedState.timeLeft !== undefined) {
                 state.timeLeft = savedState.timeLeft;
             }
-            if (savedState.currentQuestionIndex) {
+            if (savedState.currentQuestionIndex !== undefined) {
                 state.currentQuestionIndex = savedState.currentQuestionIndex;
             }
             if (savedState.userAnswers) {
                 state.userAnswers = savedState.userAnswers;
             }
-            if (savedState.score) {
+            if (savedState.score !== undefined) {
                 state.score = savedState.score;
             }
-            if (savedState.correctAnswers) {
+            if (savedState.correctAnswers !== undefined) {
                 state.correctAnswers = savedState.correctAnswers;
             }
-            if (savedState.incorrectAnswers) {
+            if (savedState.incorrectAnswers !== undefined) {
                 state.incorrectAnswers = savedState.incorrectAnswers;
             }
+            if (savedState.currentQuestions) {
+                state.currentQuestions = savedState.currentQuestions;
+            }
+            state.fullName = localStorage.getItem('userName') || state.fullName;
         },
         startTimer: function() {
             if (elements.timeLeftSpan) {
@@ -173,7 +210,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     userAnswers: state.userAnswers,
                     score: state.score,
                     correctAnswers: state.correctAnswers,
-                    incorrectAnswers: state.incorrectAnswers
+                    incorrectAnswers: state.incorrectAnswers,
+                    currentQuestions: state.currentQuestions
                 });
 
                 if (state.timeLeft <= 0) {
@@ -217,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 state.currentQuestions.map(function(_, i) {
                     return '<div class="question-box ' +
                         (i === state.currentQuestionIndex ? 'current' : '') + ' ' +
-                        (state.userAnswers[i] ? 'answered' : 'unanswered') +
+                        (state.userAnswers[i] && state.userAnswers[i].selected ? 'answered' : 'unanswered') +
                         '" data-index="' + i + '">' + (i + 1) + '</div>';
                 }).join('') + '</div>';
 
@@ -273,6 +311,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     isCorrect: selectedOption.value === question.correct_answer
                 };
             }
+            utils.setSessionData({
+                timeLeft: state.timeLeft,
+                currentQuestionIndex: state.currentQuestionIndex,
+                userAnswers: state.userAnswers,
+                score: state.score,
+                correctAnswers: state.correctAnswers,
+                incorrectAnswers: state.incorrectAnswers,
+                currentQuestions: state.currentQuestions
+            });
         },
         handleAnswer: function(isLastQuestion) {
             var selectedAnswer = document.querySelector('input[name="answer"]:checked');
@@ -292,12 +339,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         updateStats: function() {
-            var isCorrect = state.userAnswers[state.currentQuestionIndex] && state.userAnswers[state.currentQuestionIndex].isCorrect;
+            var answer = state.userAnswers[state.currentQuestionIndex];
+            var isCorrect = answer && answer.isCorrect;
 
             if (isCorrect) {
                 state.score += 10;
                 state.correctAnswers++;
-            } else if (isCorrect === false) {
+            } else if (answer && !isCorrect) {
                 state.incorrectAnswers++;
             }
 
@@ -311,16 +359,40 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             var accuracyRate = document.getElementById('accuracyRate');
             if (accuracyRate) {
-                var accuracy = state.correctAnswers > 0 ?
+                var accuracy = (state.correctAnswers + state.incorrectAnswers) > 0 ?
                     Math.round((state.correctAnswers / (state.correctAnswers + state.incorrectAnswers)) * 100) : 0;
                 accuracyRate.textContent = accuracy + '%';
             }
+
+            utils.setSessionData({
+                timeLeft: state.timeLeft,
+                currentQuestionIndex: state.currentQuestionIndex,
+                userAnswers: state.userAnswers,
+                score: state.score,
+                correctAnswers: state.correctAnswers,
+                incorrectAnswers: state.incorrectAnswers,
+                currentQuestions: state.currentQuestions
+            });
         },
         submit: function() {
             if (state.isSubmitting) return;
             state.isSubmitting = true;
 
             clearInterval(state.timerInterval);
+
+            // Fill in unanswered questions as incorrect
+            for (var i = 0; i < state.currentQuestions.length; i++) {
+                if (!state.userAnswers[i] || !state.userAnswers[i].selected) {
+                    var question = state.currentQuestions[i];
+                    state.userAnswers[i] = {
+                        question: question.question,
+                        selected: '',
+                        correct: question.correct_answer,
+                        isCorrect: false
+                    };
+                    state.incorrectAnswers++;
+                }
+            }
 
             if (state.userAnswers.length === 0) {
                 console.log('No answers to submit');
@@ -343,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 return;
             }
+            state.fullName = fullName;
 
             // Log submitted data for debugging
             console.log('Submitting quiz data:', {
@@ -377,9 +450,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }).then(function(data) {
                 console.log('Submit response:', data);
                 if (data.status === 'success') {
-                    if (sessionStorage) {
-                        sessionStorage.removeItem('quizData');
-                    }
+                    const userName = localStorage.getItem('userName') || '';
+                    const key = 'quizData_' + userName;
+                    localStorage.removeItem(key);
                     window.location.href = 'results.html';
                 } else {
                     throw new Error(data.message || 'Submission failed');
@@ -424,17 +497,11 @@ document.addEventListener('DOMContentLoaded', function() {
             state.score = 0;
             state.correctAnswers = 0;
             state.incorrectAnswers = 0;
+            state.fullName = null;
 
-            var currentScore = document.getElementById('currentScore');
-            if (currentScore) currentScore.textContent = '0';
-            var progress = document.getElementById('progress');
-            if (progress) progress.textContent = '0/' + state.currentQuestions.length;
-            var accuracyRate = document.getElementById('accuracyRate');
-            if (accuracyRate) accuracyRate.textContent = '0%';
-
-            if (sessionStorage) {
-                sessionStorage.removeItem('quizData');
-            }
+            const userName = localStorage.getItem('userName') || '';
+            const key = 'quizData_' + userName;
+            localStorage.removeItem(key);
         },
         shuffleQuestions: function() {
             state.currentQuestions = state.currentQuestions.slice().sort(function() { return Math.random() - 0.5; });
@@ -444,6 +511,15 @@ document.addEventListener('DOMContentLoaded', function() {
             state.correctAnswers = 0;
             state.incorrectAnswers = 0;
             quiz.displayQuestion();
+            utils.setSessionData({
+                timeLeft: state.timeLeft,
+                currentQuestionIndex: state.currentQuestionIndex,
+                userAnswers: state.userAnswers,
+                score: state.score,
+                correctAnswers: state.correctAnswers,
+                incorrectAnswers: state.incorrectAnswers,
+                currentQuestions: state.currentQuestions
+            });
         }
     };
 
@@ -478,6 +554,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            state.fullName = fullName;
             if (elements.userNameSpan) elements.userNameSpan.textContent = fullName;
             localStorage.setItem('userName', fullName);
 
@@ -510,7 +587,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 utils.showMessage(elements.loginMessage, 'Login successful! Redirecting...', false);
                 var fullNameInput = elements.loginForm.querySelector('#fullName');
-                localStorage.setItem('userName', fullNameInput ? fullNameInput.value : 'User');
+                var fullName = fullNameInput ? fullNameInput.value : 'User';
+                localStorage.setItem('userName', fullName);
+                state.fullName = fullName;
                 setTimeout(function() { window.location.href = 'index.php'; }, 1500);
             }).catch(function(error) {
                 utils.showMessage(elements.loginMessage, error.message);
@@ -773,12 +852,12 @@ document.addEventListener('DOMContentLoaded', function() {
             elements.scoreModal.className = elements.scoreModal.className.replace(' hidden', '');
             var scoreDetails = elements.scoreDetails;
             var answersHtml = '';
-            for (var i = 0; i < state.userAnswers.length; i++) {
+            for (var i = 0; i < state.currentQuestions.length; i++) {
                 var answer = state.userAnswers[i];
                 answersHtml += '<div class="question-result ' + (answer && answer.isCorrect ? 'correct' : 'incorrect') + '">' +
-                    '<p>Question ' + (i + 1) + ': ' + (answer && answer.question ? answer.question : '') + '</p>' +
+                    '<p>Question ' + (i + 1) + ': ' + (answer && answer.question ? answer.question : state.currentQuestions[i].question) + '</p>' +
                     '<p>Your Answer: ' + (answer && answer.selected ? answer.selected : 'Unanswered') + '</p>' +
-                    (answer && !answer.isCorrect ? '<p>Correct: ' + answer.correct + '</p>' : '') +
+                    (answer && !answer.isCorrect ? '<p>Correct: ' + (answer ? answer.correct : state.currentQuestions[i].correct_answer) + '</p>' : '') +
                     '</div>';
             }
 
@@ -786,7 +865,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<p>Total Score: ' + state.score + '</p>' +
                 '<p>Correct: ' + state.correctAnswers + '</p>' +
                 '<p>Incorrect: ' + state.incorrectAnswers + '</p>' +
-                '<p>Accuracy: ' + (state.correctAnswers > 0 ?
+                '<p>Accuracy: ' + (state.correctAnswers + state.incorrectAnswers > 0 ?
                     Math.round((state.correctAnswers / (state.correctAnswers + state.incorrectAnswers)) * 100) : 0) + '%</p>' +
                 '<h4>Details:</h4>' + answersHtml;
         },
