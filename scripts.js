@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded - window.questions:', window.questions);
 
     var state = {
-        timeLeft: 1800,
+        timeLeft: 600,
         timerInterval: null,
         currentQuestions: Array.isArray(window.questions) ? window.questions : [],
         currentQuestionIndex: 0,
